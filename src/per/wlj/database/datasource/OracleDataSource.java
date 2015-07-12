@@ -15,12 +15,12 @@ import per.wlj.database.source.impl.OracleDescripCommond;
 public class OracleDataSource {
 	
 	String driverClassName = "oracle.jdbc.driver.OracleDriver";
-	String url = "jdbc:oracle:thin:@114.215.170.78:1521:orcl";
-	String username = "crm";
-	String password = "crm";
+	String url = "jdbc:oracle:thin:@192.168.251.157:1521:ycorcl";
+	String username = "crm_cd";
+	String password = "crm_cd";
 
 	public OracleDataSource() throws Exception{
-		Class.forName(driverClassName);
+		//Class.forName(driverClassName);
 	}
 	
 	public Connection getConnection() throws Exception{
@@ -47,7 +47,7 @@ public class OracleDataSource {
 			rs = ps.executeQuery();
 			Table t = null;
 			String templatesDir = "E:\\files\\st\\";
-			StringTemplateGroup stg = new StringTemplateGroup("mysql",templatesDir);
+			StringTemplateGroup stg = new StringTemplateGroup("mysql");
 			StringTemplate st1 = stg.getInstanceOf("Mysql");
 			while(rs.next()){
 				System.out.println(rs.getString("TABLE_NAME"));

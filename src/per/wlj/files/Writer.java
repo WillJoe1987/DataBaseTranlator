@@ -7,7 +7,7 @@ import java.io.IOException;
 public class Writer {
 		
 	String fileName= "E:/files/1.sql";
-	String lineSeporat = System.lineSeparator();
+	String lineSeporat = "\r\n";//System.lineSeparator();
 	File file = null;
 	FileWriter fw = null;
 	

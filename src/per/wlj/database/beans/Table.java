@@ -39,4 +39,13 @@ public class Table {
 		this.columns.add(column);
 	}
 	
+	public Column getColumn(String name){
+		for(Column column : this.columns){
+			if(column.getName().equals(name)){
+				return column;
+			}
+		}
+		return null;
+	}
+	
 }

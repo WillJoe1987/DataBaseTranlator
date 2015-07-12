@@ -4,6 +4,6 @@ import per.wlj.database.beans.Table;
 
 public interface IConvertor {
 	
-	public StringBuilder convertDDL(Table table);
+	public Table convert(Table table);
 	
 }

@@ -6,6 +6,8 @@ public interface IDescriptionCommand {
 	
 	public String getTableDescribCommand();
 	
+	public String getTableDescribCommandByName(String name);
+	
 	public String getColumnsByTableName(String tableName);
 	
 }
