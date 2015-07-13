@@ -41,6 +41,22 @@ public class Writer {
 		w.writeLine("second line");
 		w.closeWriter();
 	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
+	public File getFile() {
+		return file;
+	}
+
+	public void setFile(File file) {
+		this.file = file;
+	}
 	
 	
 }

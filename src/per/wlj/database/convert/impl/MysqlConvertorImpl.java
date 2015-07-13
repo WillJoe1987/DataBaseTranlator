@@ -45,6 +45,7 @@ public class MysqlConvertorImpl implements IConvertor {
 			column.setType("DATETIME");
 		}else if(type.equals("NUMBER")){
 			if(column.getScale() == 0){
+				//BIGINT LENGTH ALWAYS 19.IT WILL BE NO EFFACT IF YOU SET A LENGTH NUMBER.
 				column.setType("BIGINT");
 			}else{
 				column.setType("DECIMAL");

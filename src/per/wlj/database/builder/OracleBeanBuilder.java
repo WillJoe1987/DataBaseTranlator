@@ -126,7 +126,13 @@ public class OracleBeanBuilder implements IBeanBuilder {
 				col.setPrecision(columnRS.getInt("DATA_PRECISION"));
 				col.setScale(columnRS.getInt("DATA_SCALE"));
 				col.setNullable("Y".equals(columnRS.getString("NULLABLE")));
-				col.setComment(columnRS.getString("COMMENTS"));
+				col.setComment(columnRS.getString("COMMENTS"));				
+				
+				//ORACLE LEGNTH PROCESS
+				if(col.getLengthable() && (col.getPrecision()>col.getDataLength())){
+					col.setDataLength(col.getPrecision());
+				}
+				
 				table.addColumn(col);
 			}
 			
