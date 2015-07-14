@@ -5,8 +5,6 @@ public class Database {
 	String type = "oracle";
 	String version = "11.0";
 	
-	
-	
 	public String getType() {
 		return type;
 	}
@@ -19,9 +17,5 @@ public class Database {
 	public void setVersion(String version) {
 		this.version = version;
 	}
-	
-	
-	
-	
 	
 }

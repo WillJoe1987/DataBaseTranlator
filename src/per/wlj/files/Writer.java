@@ -34,14 +34,6 @@ public class Writer {
 		fw.write(lineSeporat);
 	}
 	
-	public static void main(String[] args) throws Exception {
-		Writer w = new Writer();
-		w.createAndOpenFile();
-		w.writeLine("first line");
-		w.writeLine("second line");
-		w.closeWriter();
-	}
-
 	public String getFileName() {
 		return fileName;
 	}
@@ -49,14 +41,5 @@ public class Writer {
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-
-	public File getFile() {
-		return file;
-	}
-
-	public void setFile(File file) {
-		this.file = file;
-	}
-	
 	
 }

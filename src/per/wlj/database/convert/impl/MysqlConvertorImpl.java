@@ -3,9 +3,6 @@ package per.wlj.database.convert.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-
 import per.wlj.database.beans.Column;
 import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
@@ -20,26 +17,19 @@ public class MysqlConvertorImpl implements IConvertor {
 		errorNames.add("CONDITION");
 	}
 	
-	
 	@Override
 	public Table convert(Table table) {
-		
-		//Database source = table.getDatabase();
 		Database target = new Database();
 		target.setType("mysql");
 		target.setVersion("5.6");
-		
 		table.setDatabase(target);
-		
 		for(Column column : table.getColumns()){
 			converColumnFromOracle(column);
 		}
-		
 		return null;
 	}
 	
 	private void converColumnFromOracle(Column column){
-		
 		String type = column.getType();
 		if(type.equals("DATE")){
 			column.setType("DATETIME");
@@ -57,38 +47,10 @@ public class MysqlConvertorImpl implements IConvertor {
 		}else if(type.equals("CLOB")){
 			column.setType("TEXT");
 		}
-		
 		String name = column.getName();
 		if(errorNames.indexOf(name.toUpperCase())>=0){
 			column.setName("_"+name);
 			System.out.println("【ERROR】：the column Name【"+name+"】 is invalidate in mysql, it has bean changed into 【_"+name+"】");
 		}
-		
-		
 	}
-	
-	
-	public static void main(String[] args) {
-		String templatesDir = "E:\\files\\st\\";
-		StringTemplateGroup stg = new StringTemplateGroup("mysql",templatesDir);
-		StringTemplate st1 = stg.getInstanceOf("Mysql");
-	//	st1.
-		Table t = new Table();
-		t.setName("table1");
-		t.setDatabase(new Database());
-		t.setComment("234");
-		Column c1 = new Column();
-		Column c2 = new Column();
-		c1.setName("1");
-		c2.setName("2");
-		c1.setType("varchar2");
-		c2.setType("bigint");
-		
-		t.addColumn(c1);
-		t.addColumn(c2);
-		
-		st1.setAttribute("table", t);
-		System.out.println(st1.toString());
-	}
-	
 }

@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.antlr.stringtemplate.StringTemplate;
@@ -15,7 +14,7 @@ import per.wlj.database.beans.Column;
 import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
 import per.wlj.database.convert.impl.MysqlConvertorImpl;
-import per.wlj.database.datasource.OracleDataSource;
+import per.wlj.database.datasource.impl.OracleDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
 import per.wlj.files.Writer;
 
@@ -158,24 +157,15 @@ public class OracleBeanBuilder implements IBeanBuilder {
 	}
 	public static void main(String[] args) throws Exception {
 		OracleBeanBuilder obb = new OracleBeanBuilder(new OracleDataSource());
-//		Table cntMenu = obb.buildTableByName("CNT_MENU");
-//		System.out.println(cntMenu);
 		long start = System.currentTimeMillis();
-		
-		
-		
 		List<Table> tables = obb.buildAllTables();
-		
 		MysqlConvertorImpl mci = new MysqlConvertorImpl();
-		
-		String templatesDir = "E:\\files\\st\\";
 		StringTemplateGroup stg = new StringTemplateGroup("mysql");
-		
 		Writer w = new Writer();
+		w.setFileName("E:/files/1.sql");
 		w.createAndOpenFile();
 		int i=0;
 		for(Table table : tables){
-			
 			mci.convert(table);
 			StringTemplate st1 = stg.getInstanceOf("Mysql");
 			st1.setAttribute("table", table);
@@ -189,9 +179,5 @@ public class OracleBeanBuilder implements IBeanBuilder {
 		
 		long sd = (end - start)/1000;
 		System.out.println("user time : "+sd+" s;");
-//		st1.setAttribute("table", cntMenu);
-//		System.out.println(cntMenu.getColumns().size());
-//		st1.setAttribute("columns", cntMenu.getColumns());
-//		System.out.println(st1.toString());
 	}
 }

@@ -15,7 +15,6 @@ public class Column {
 		nonLengthAble.add("LONG");
 	}
 	
-	
 	String name = null;
 	
 	String type = null;

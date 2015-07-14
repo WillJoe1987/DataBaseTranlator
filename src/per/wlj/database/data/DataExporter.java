@@ -8,10 +8,11 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 
 import per.wlj.database.convert.impl.MysqlConvertorImpl;
-import per.wlj.database.datasource.OracleDataSource;
+import per.wlj.database.datasource.impl.OracleDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
 import per.wlj.files.Writer;
 
@@ -19,17 +20,18 @@ public class DataExporter {
 	
 	String dataFileName = "data.sql";
 	String dataFilePath = "E:/files/";
-	String[] exludeTable = {};
-	
-	
-	int limit = 30;
+	String[] exludeTables = {"ACRM_F_CI_DEP_TOP",
+			"OCRM_F_WP_WORK_REPORT_COM",
+			"OCRM_F_WP_WORK_REPORT_PER",
+			"ACRM_F_CI_GRT_INFO"};
+	int limit = 400;
+	int start = 0;
 	
 	public void buildData(){
 		Writer writer = new Writer();
 		writer.setFileName(dataFilePath+dataFileName);
 		OracleDescripCommond odc = new OracleDescripCommond();
 		String allTable = odc.getTableDescribCommand();
-		
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -40,13 +42,17 @@ public class DataExporter {
 			ps = conn.prepareStatement(allTable);
 			rs = ps.executeQuery();
 			int index = 0;
-			while(rs.next() && index < limit){
-				writer.writeLine("-- --------------------------------------------------------------");
-				writer.writeLine("-- 导出表：【"+rs.getString("TABLE_NAME")+"】；（"+rs.getString("COMMENTS")+"）");
-				writer.writeLine("-- --------------------------------------------------------------");
-				writer.writeLine("truncate table "+rs.getString("TABLE_NAME")+";");
-				
-				buildTable(rs.getString("TABLE_NAME"), conn, writer);
+			while(rs.next() &&  index < limit){
+				if(!Arrays.asList(this.exludeTables).contains(rs.getString("TABLE_NAME")) && index >= start){
+					writer.writeLine("-- --------------------------------------------------------------");
+					writer.writeLine("-- index : "+index);
+					String comment = rs.getString("COMMENTS");
+					writer.writeLine("-- 导出表：【"+rs.getString("TABLE_NAME")+"】；（"+((null==comment)?null:comment.replace('\n', ' '))+"）");
+					writer.writeLine("-- --------------------------------------------------------------");
+					writer.writeLine("truncate table "+rs.getString("TABLE_NAME")+";");
+					buildTable(rs.getString("TABLE_NAME"), conn, writer);
+				}
+				System.out.println("TABLE INDDEX 【"+index+"】");
 				index ++ ;
 			}
 			writer.closeWriter();
@@ -133,7 +139,7 @@ public class DataExporter {
 			insertHead.append(" ) values ");
 			
 			int lineNumber= 0;
-			while(rs.next() && lineNumber < 10){
+			while(rs.next()){
 				StringBuilder valuesSql = new StringBuilder("(");
 				for(int i=1;i<=rsmd.getColumnCount();i++){
 					int type = rsmd.getColumnType(i);
