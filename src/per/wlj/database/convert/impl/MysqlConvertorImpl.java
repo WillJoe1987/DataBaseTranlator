@@ -10,6 +10,48 @@ import per.wlj.database.convert.IConvertor;
 
 public class MysqlConvertorImpl implements IConvertor {
 	
+//	public static enum MysqlColumnType {
+//		TINYINT,
+//		SMALLINT,
+//		MEDIUMINT,
+//		INT,
+//		INTEGER, //INTEGER
+//		BIGINT,  //LONG
+//		BIT,	 //C
+//		REAL,
+//		DOUBLE,
+//		FLOAT,
+//		DECIMAL,
+//		NUMERIC,
+//		CHAR,
+//		VARCHAR,
+//		DATE,
+//		TIME,
+//		YEAR,
+//		TIMESTAMP,
+//		DATETIME,
+//		TINYBLOB,
+//		BLOB,
+//		MEDIUMBLOB,
+//		LONGBLOB,
+//		TINYTEXT,
+//		TEXT,
+//		MEDIUMTEXT,
+//		LONGTEXT,
+//		ENUM,
+//		SET,
+//		BINARY,
+//		VARBINARY,
+//		POINT,
+//		LINESTRING,
+//		POLYGON,
+//		GEOMETRY,
+//		MULTIPOINT,
+//		MULTILINESTRING,
+//		MULTIPOLYGON,
+//		GEOMETRYCOLLECTION
+//	}
+	
 	public static final List<String> errorNames = new ArrayList<String>();
 	static {
 		errorNames.add("LIMIT");
@@ -29,24 +71,38 @@ public class MysqlConvertorImpl implements IConvertor {
 		return null;
 	}
 	
-	private void converColumnFromOracle(Column column){
-		String type = column.getType();
-		if(type.equals("DATE")){
-			column.setType("DATETIME");
-		}else if(type.equals("NUMBER")){
-			if(column.getScale() == 0){
-				//BIGINT LENGTH ALWAYS 19.IT WILL BE NO EFFACT IF YOU SET A LENGTH NUMBER.
+	private void converColumnFromOracle(Column column){		
+		int oriType = column.getOriginType();
+		switch (oriType) {
+			case 1 :
+				column.setType("VARCHAR");
+				break;
+			case 2 :
+				column.setType("INTEGER");
+				break;
+			case 3 :
 				column.setType("BIGINT");
-			}else{
+				break;
+			case 4 :
 				column.setType("DECIMAL");
-			}
-		}else if(type.equals("VARCHAR2")){
-			column.setType("VARCHAR");
-		}else if(type.equals("LONG")){
-			column.setType("BIGINT");
-		}else if(type.equals("CLOB")){
-			column.setType("TEXT");
+				break;
+			case 5 :
+				column.setType("DATETIME");
+				break;
+			case 6 : 
+				column.setType("TIMESTAMP");
+				break;
+			case 7 : 
+				column.setType("BLOB");
+				break;
+			case 8 : 
+				column.setType("TEXT");
+				break;
+			default:
+				column.setType("VARCHAR");
+				break;
 		}
+		
 		String name = column.getName();
 		if(errorNames.indexOf(name.toUpperCase())>=0){
 			column.setName("_"+name);

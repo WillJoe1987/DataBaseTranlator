@@ -5,6 +5,17 @@ import java.util.List;
 
 public class Column {
 	
+	public static int TYPE_STRING = 1;
+	public static int TYPE_INTEGER = 2;
+	public static int TYPE_LONG = 3;
+	public static int TYPE_FLOAT = 4;
+	public static int TYPE_DATE = 5;
+	public static int TYPE_TIMESTAMP = 6;
+	public static int TYPE_BLOB = 7;
+	public static int TYPE_CLOB = 8;
+	public static int TYPE_CHAR = 9;
+	
+	
 	public static List<String> nonLengthAble = new ArrayList<String>();
 	static {
 		nonLengthAble.add("DATE");
@@ -14,6 +25,8 @@ public class Column {
 		nonLengthAble.add("CLOB");
 		nonLengthAble.add("LONG");
 	}
+	
+	int originType = 0;
 	
 	String name = null;
 	
@@ -32,6 +45,16 @@ public class Column {
 	int precision = 0;
 	
 	int scale = 0;
+
+	Table ownerTable ;
+	
+	public Table getOwnerTable() {
+		return ownerTable;
+	}
+
+	public void setOwnerTable(Table ownerTable) {
+		this.ownerTable = ownerTable;
+	}
 
 	public String getName() {
 		return name;
@@ -82,10 +105,6 @@ public class Column {
 	}
 
 	public void setDataLength(int dataLength) {
-		if(nonLengthAble.indexOf(this.type)>=0){
-			return;
-		}
-		this.lengthable = true;
 		this.dataLength = dataLength;
 	}
 
@@ -111,6 +130,18 @@ public class Column {
 
 	public boolean getLengthable() {
 		return lengthable;
+	}
+	
+	public int  getOriginType() {
+		return originType;
+	}
+
+	public void setOriginType(int originType) {
+		this.originType = originType;
+	}
+
+	public void setLengthable(boolean lengthable) {
+		this.lengthable = lengthable;
 	}
 	
 }

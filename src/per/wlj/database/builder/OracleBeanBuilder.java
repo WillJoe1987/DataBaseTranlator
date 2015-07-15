@@ -5,7 +5,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
@@ -14,22 +16,53 @@ import per.wlj.database.beans.Column;
 import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
 import per.wlj.database.convert.impl.MysqlConvertorImpl;
-import per.wlj.database.datasource.impl.OracleDataSource;
+import per.wlj.database.datasource.impl.DTDataSource;
+import per.wlj.database.datasource.impl.DataSourceFactory;
+import per.wlj.database.datasource.impl.IDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
 import per.wlj.files.Writer;
 
 public class OracleBeanBuilder implements IBeanBuilder {
 	
-	OracleDataSource ods;
+	IDataSource ods;
 	OracleDescripCommond odc;
 	Database oracle = new Database();
 	
-	
-	public OracleBeanBuilder(OracleDataSource ods){
+	public OracleBeanBuilder(IDataSource ods){
 		this.ods = ods;
 		odc = new OracleDescripCommond();
 	}
 	
+	public static List<String> nonLengthAble = new ArrayList<String>();
+	static {
+		nonLengthAble.add("DATE");
+		nonLengthAble.add("TIMESTAMP");
+		nonLengthAble.add("TIMESTAMP(6)");
+		nonLengthAble.add("DATETIME");
+		nonLengthAble.add("CLOB");
+		nonLengthAble.add("LONG");
+	}
+	
+	public static Map<String ,Integer> typeMapping = new HashMap<String ,Integer>();
+	
+	static {
+		typeMapping.put("LONG", Column.TYPE_LONG);
+		typeMapping.put("NCLOB", Column.TYPE_BLOB);
+		typeMapping.put("NUMBER", Column.TYPE_FLOAT);
+		typeMapping.put("NVARCHAR2", Column.TYPE_STRING);
+		typeMapping.put("RAW", Column.TYPE_STRING);
+		typeMapping.put("TIMESTAMP(6)", Column.TYPE_TIMESTAMP);
+		typeMapping.put("VARCHAR2", Column.TYPE_STRING);
+		typeMapping.put("BINARY_DOUBLE", Column.TYPE_FLOAT);
+		typeMapping.put("BINARY_FLOAT", Column.TYPE_FLOAT);
+		typeMapping.put("BLOB", Column.TYPE_BLOB);
+		typeMapping.put("CLOB", Column.TYPE_CLOB);
+		typeMapping.put("CHAR", Column.TYPE_CHAR);
+		typeMapping.put("DATE", Column.TYPE_DATE);
+	}
+	
+	
+	@SuppressWarnings("finally")
 	public List<Table> buildAllTables(){
 		Connection conn = null;
 		List<Table> tables = new ArrayList<Table>();		
@@ -56,7 +89,6 @@ public class OracleBeanBuilder implements IBeanBuilder {
 	}
 	
 	public Table buildTableByName(String tableName){
-		
 		Connection conn = null;
 		Table table = null;
 		try{
@@ -71,7 +103,6 @@ public class OracleBeanBuilder implements IBeanBuilder {
 				try {
 					conn.close();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 		}
@@ -113,7 +144,6 @@ public class OracleBeanBuilder implements IBeanBuilder {
 		PreparedStatement PKPS = null;
 		ResultSet columnRS = null;
 		ResultSet PKRS = null;
-		
 		try{
 			columnPS = con.prepareStatement(columnSql);
 			columnRS = columnPS.executeQuery();
@@ -126,15 +156,9 @@ public class OracleBeanBuilder implements IBeanBuilder {
 				col.setScale(columnRS.getInt("DATA_SCALE"));
 				col.setNullable("Y".equals(columnRS.getString("NULLABLE")));
 				col.setComment(columnRS.getString("COMMENTS"));				
-				
-				//ORACLE LEGNTH PROCESS
-				if(col.getLengthable() && (col.getPrecision()>col.getDataLength())){
-					col.setDataLength(col.getPrecision());
-				}
-				
 				table.addColumn(col);
+				preFixColumn(col);
 			}
-			
 			PKPS = con.prepareStatement(columnPK);
 			PKRS = PKPS.executeQuery();
 			while(PKRS.next()){
@@ -155,29 +179,24 @@ public class OracleBeanBuilder implements IBeanBuilder {
 			}
 		}
 	}
-	public static void main(String[] args) throws Exception {
-		OracleBeanBuilder obb = new OracleBeanBuilder(new OracleDataSource());
-		long start = System.currentTimeMillis();
-		List<Table> tables = obb.buildAllTables();
-		MysqlConvertorImpl mci = new MysqlConvertorImpl();
-		StringTemplateGroup stg = new StringTemplateGroup("mysql");
-		Writer w = new Writer();
-		w.setFileName("E:/files/1.sql");
-		w.createAndOpenFile();
-		int i=0;
-		for(Table table : tables){
-			mci.convert(table);
-			StringTemplate st1 = stg.getInstanceOf("Mysql");
-			st1.setAttribute("table", table);
-			w.writeLine(st1.toString());
-			System.out.println("Writing THE【"+i+"】table,name:【"+table.getName()+"】");
-			i++;
+	
+	public void preFixColumn(Column col){
+		String type = col.getType();
+		int oriType = typeMapping.get(type);
+		
+		if(type.equals("NUMBER")){
+			if(col.getScale() == 0){
+				oriType=Column.TYPE_LONG;
+			}else{
+				oriType=Column.TYPE_FLOAT;
+			}
 		}
-		
-		w.closeWriter();
-		long end = System.currentTimeMillis();
-		
-		long sd = (end - start)/1000;
-		System.out.println("user time : "+sd+" s;");
+		col.setOriginType(oriType);
+		if(nonLengthAble.indexOf(col.getType())<0){
+			col.setLengthable(true);
+		}
+		if(col.getLengthable() && (col.getPrecision()>col.getDataLength())){
+			col.setDataLength(col.getPrecision());
+		}
 	}
 }

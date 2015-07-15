@@ -1,4 +1,4 @@
-package per.wlj.database.data;
+package per.wlj.database.data.impl;
 
 import java.io.IOException;
 import java.sql.Connection;
@@ -11,8 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
+import oracle.jdbc.pool.OracleDataSource;
 import per.wlj.database.convert.impl.MysqlConvertorImpl;
-import per.wlj.database.datasource.impl.OracleDataSource;
+import per.wlj.database.datasource.impl.DTDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
 import per.wlj.files.Writer;
 
@@ -78,7 +79,7 @@ public class DataExporter {
 		try {
 			writer.createAndOpenFile();
 			writer.writeLine("truncate table "+tablename+";");
-			OracleDataSource ods = new OracleDataSource();
+			DTDataSource ods = new DTDataSource();
 			conn = ods.getConnection();
 			DataExporter de = new DataExporter();
 			de.buildTable(tablename, conn, writer);
@@ -197,15 +198,5 @@ public class DataExporter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	
-	public static void main(String[] args) {
-		long start = System.currentTimeMillis();
-		DataExporter de = new DataExporter();
-		de.buildData();
-		long end = System.currentTimeMillis();
-		System.out.println("Time used total: ["+((end - start)/1000)+"]");
-	}
-	
+	}	
 }

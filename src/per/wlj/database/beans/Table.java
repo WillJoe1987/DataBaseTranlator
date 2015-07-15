@@ -36,6 +36,7 @@ public class Table {
 	}
 	
 	public void addColumn(Column column){
+		column.setOwnerTable(this);
 		this.columns.add(column);
 	}
 	
