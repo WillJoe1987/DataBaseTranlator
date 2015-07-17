@@ -11,9 +11,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-import oracle.jdbc.pool.OracleDataSource;
-import per.wlj.database.convert.impl.MysqlConvertorImpl;
 import per.wlj.database.datasource.impl.DTDataSource;
+import per.wlj.database.datasource.impl.DataSourceFactory;
+import per.wlj.database.datasource.impl.IDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
 import per.wlj.files.Writer;
 
@@ -38,7 +38,7 @@ public class DataExporter {
 		ResultSet rs = null;
 		try {
 			writer.createAndOpenFile();
-			OracleDataSource ods = new OracleDataSource();
+			IDataSource ods = DataSourceFactory.getInstance().createDataSource("oracle");
 			conn = ods.getConnection();
 			ps = conn.prepareStatement(allTable);
 			rs = ps.executeQuery();
@@ -129,11 +129,7 @@ public class DataExporter {
 			insertHead.append("(");
 			for(int i=1;i<=rsmd.getColumnCount();i++){
 				String columnName = rsmd.getColumnName(i);
-				if(MysqlConvertorImpl.errorNames.indexOf(columnName)>=0){
-					insertHead.append("_"+columnName);
-				}else{
-					insertHead.append(columnName);
-				}
+				insertHead.append("`"+columnName+"`");
 				if(i<rsmd.getColumnCount() )
 					insertHead.append(", ");
 			}
@@ -198,5 +194,38 @@ public class DataExporter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+	public String getDataFileName() {
+		return dataFileName;
+	}
+
+	public void setDataFileName(String dataFileName) {
+		this.dataFileName = dataFileName;
+	}
+
+	public String getDataFilePath() {
+		return dataFilePath;
+	}
+
+	public void setDataFilePath(String dataFilePath) {
+		this.dataFilePath = dataFilePath;
+	}
+
+	public int getLimit() {
+		return limit;
+	}
+
+	public void setLimit(int limit) {
+		this.limit = limit;
+	}
+
+	public int getStart() {
+		return start;
+	}
+
+	public void setStart(int start) {
+		this.start = start;
 	}	
+	
 }

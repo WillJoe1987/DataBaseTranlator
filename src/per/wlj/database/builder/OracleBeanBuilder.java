@@ -9,18 +9,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.antlr.stringtemplate.StringTemplate;
-import org.antlr.stringtemplate.StringTemplateGroup;
-
 import per.wlj.database.beans.Column;
 import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
-import per.wlj.database.convert.impl.MysqlConvertorImpl;
-import per.wlj.database.datasource.impl.DTDataSource;
 import per.wlj.database.datasource.impl.DataSourceFactory;
 import per.wlj.database.datasource.impl.IDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
-import per.wlj.files.Writer;
 
 public class OracleBeanBuilder implements IBeanBuilder {
 	
@@ -28,8 +22,8 @@ public class OracleBeanBuilder implements IBeanBuilder {
 	OracleDescripCommond odc;
 	Database oracle = new Database();
 	
-	public OracleBeanBuilder(IDataSource ods){
-		this.ods = ods;
+	public OracleBeanBuilder(){
+		this.ods = DataSourceFactory.getInstance().createDataSource("oracle");
 		odc = new OracleDescripCommond();
 	}
 	
@@ -74,7 +68,7 @@ public class OracleBeanBuilder implements IBeanBuilder {
 			ps = conn.prepareStatement(allTables);
 			rs = ps.executeQuery();
 			int i = 0;
-			while(rs.next()){
+			while(rs.next() ){
 				String tableName =  rs.getString("TABLE_NAME");
 				System.out.println("BUILD THE【"+i+"】table,name:【"+tableName+"】");
 				Table table = buildTableByName(tableName, conn);

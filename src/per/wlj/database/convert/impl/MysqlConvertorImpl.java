@@ -52,13 +52,6 @@ public class MysqlConvertorImpl implements IConvertor {
 //		GEOMETRYCOLLECTION
 //	}
 	
-	public static final List<String> errorNames = new ArrayList<String>();
-	static {
-		errorNames.add("LIMIT");
-		errorNames.add("KEY");
-		errorNames.add("CONDITION");
-	}
-	
 	@Override
 	public Table convert(Table table) {
 		Database target = new Database();
@@ -103,10 +96,10 @@ public class MysqlConvertorImpl implements IConvertor {
 				break;
 		}
 		
-		String name = column.getName();
-		if(errorNames.indexOf(name.toUpperCase())>=0){
-			column.setName("_"+name);
-			System.out.println("【ERROR】：the column Name【"+name+"】 is invalidate in mysql, it has bean changed into 【_"+name+"】");
+		//整形主键默认自增
+		if(column.getIsPK() && (column.getType().equals("BIGINT") || column.getType().equals("INTEGER"))){
+			column.setAutoEncrease(true);
 		}
+		
 	}
 }

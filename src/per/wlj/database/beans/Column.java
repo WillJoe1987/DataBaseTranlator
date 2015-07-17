@@ -45,6 +45,8 @@ public class Column {
 	int precision = 0;
 	
 	int scale = 0;
+	
+	boolean autoEncrease = false;
 
 	Table ownerTable ;
 	
@@ -143,5 +145,15 @@ public class Column {
 	public void setLengthable(boolean lengthable) {
 		this.lengthable = lengthable;
 	}
+
+	public boolean isAutoEncrease() {
+		return autoEncrease;
+	}
+
+	public void setAutoEncrease(boolean autoEncrease) {
+		this.autoEncrease = autoEncrease;
+	}
+	
+	
 	
 }
