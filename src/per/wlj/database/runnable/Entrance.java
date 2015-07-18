@@ -52,6 +52,38 @@ public class Entrance {
 		System.out.println("user time : "+sd+" s;");
 	}
 	
+	public void runDdl(String name) throws Exception{
+		
+		String filePath = (String)BuilderContext.getInstance().getParams(Constance.KEY_DDL_PATH);
+		String fileName = (String)BuilderContext.getInstance().getParams(Constance.KEY_DDL_FILENAME);
+		
+		if(null == filePath || "".equals(filePath)){
+			filePath = "E:/files";
+		}
+		if(null == fileName || "".equals(fileName)){
+			fileName = "ddl.sql";
+		}
+		
+		OracleBeanBuilder obb = new OracleBeanBuilder();
+		long start = System.currentTimeMillis();
+		Table table = obb.buildTableByName(name);
+		
+		MysqlConvertorImpl mci = new MysqlConvertorImpl();
+		StringTemplateGroup stg = new StringTemplateGroup("mysql");
+		Writer w = new Writer();
+		w.setFileName(filePath+fileName);
+		w.createAndOpenFile();
+		mci.convert(table);
+		StringTemplate st1 = stg.getInstanceOf("Mysql");
+		st1.setAttribute("table", table);
+		w.writeLine(st1.toString());
+		System.out.println("Writing THE table, name:【"+table.getName()+"】");
+		w.closeWriter();
+		long end = System.currentTimeMillis();
+		long sd = (end - start)/1000;
+		System.out.println("user time : "+sd+" s;");
+	
+	}
 	
 	public void runDataExport(){
 		long start = System.currentTimeMillis();
@@ -74,6 +106,7 @@ public class Entrance {
 	public static void main(String[] args) throws Exception {
 		
 		String runpar = "ddl";//data
+		
 		
 		Entrance en = new Entrance();
 		if("ddl".equals(runpar)){
