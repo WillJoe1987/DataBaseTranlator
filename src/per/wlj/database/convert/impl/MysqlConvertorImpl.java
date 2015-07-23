@@ -1,8 +1,5 @@
 package per.wlj.database.convert.impl;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import per.wlj.database.beans.Column;
 import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
@@ -80,7 +77,7 @@ public class MysqlConvertorImpl implements IConvertor {
 				column.setType("DECIMAL");
 				break;
 			case 5 :
-				column.setType("DATETIME");
+				column.setType("DATE");
 				break;
 			case 6 : 
 				column.setType("TIMESTAMP");

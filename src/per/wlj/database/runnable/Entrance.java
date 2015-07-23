@@ -9,6 +9,7 @@ import per.wlj.database.beans.Table;
 import per.wlj.database.builder.OracleBeanBuilder;
 import per.wlj.database.convert.impl.MysqlConvertorImpl;
 import per.wlj.database.data.impl.DataExporter;
+import per.wlj.database.ui.MainUI;
 import per.wlj.database.util.BuilderContext;
 import per.wlj.database.util.Constance;
 import per.wlj.files.Writer;
@@ -44,12 +45,15 @@ public class Entrance {
 			st1.setAttribute("table", table);
 			w.writeLine(st1.toString());
 			System.out.println("Writing THE【"+i+"】table,name:【"+table.getName()+"】");
+			MainUI.log("Writing THE【"+i+"】table,name:【"+table.getName()+"】");
 			i++;
 		}
 		w.closeWriter();
 		long end = System.currentTimeMillis();
 		long sd = (end - start)/1000;
 		System.out.println("user time : "+sd+" s;");
+		MainUI.log("user time : "+sd+" s;");
+		MainUI.log("writing in : "+ w.getFileName());	
 	}
 	
 	public void runDdl(String name) throws Exception{
@@ -77,12 +81,15 @@ public class Entrance {
 		StringTemplate st1 = stg.getInstanceOf("Mysql");
 		st1.setAttribute("table", table);
 		w.writeLine(st1.toString());
-		System.out.println("Writing THE table, name:【"+table.getName()+"】");
+		String logStr = new String("Writing THE table, name:【"+table.getName()+"】");
+		System.out.println(logStr);
+		MainUI.log(logStr);
 		w.closeWriter();
 		long end = System.currentTimeMillis();
 		long sd = (end - start)/1000;
 		System.out.println("user time : "+sd+" s;");
-	
+		MainUI.log("user time : "+sd+" s;");
+		MainUI.log("writing in : "+ w.getFileName());	
 	}
 	
 	public void runDataExport(){
@@ -103,17 +110,14 @@ public class Entrance {
 		System.out.println("Time used total: ["+((end - start)/1000)+"]");
 	}
 	
-	public static void main(String[] args) throws Exception {
-		
-		String runpar = "ddl";//data
-		
-		
-		Entrance en = new Entrance();
-		if("ddl".equals(runpar)){
-			en.runDdl();
-		} else {
-			en.runDataExport();
-		}
-	}
+//	public static void main(String[] args) throws Exception {
+//		String runpar = "ddl";//data
+//		Entrance en = new Entrance();
+//		if("ddl".equals(runpar)){
+//			en.runDdl();
+//		} else {
+//			en.runDataExport();
+//		}
+//	}
 	
 }

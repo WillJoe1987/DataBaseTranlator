@@ -48,10 +48,4 @@ public class OracleDescripCommond implements IDescriptionCommand {
 				+ "where t.table_name='"+name+"'";
 		return sql;
 	}
-
-	public static void main(String[] args) {
-		OracleDescripCommond odc = new OracleDescripCommond();
-		System.out.println(odc.getPKColumnCommand("ADMIN_LOG_INFO"));
-	}
-	
 }

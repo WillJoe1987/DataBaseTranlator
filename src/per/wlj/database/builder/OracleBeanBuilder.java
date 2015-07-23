@@ -15,6 +15,7 @@ import per.wlj.database.beans.Table;
 import per.wlj.database.datasource.impl.DataSourceFactory;
 import per.wlj.database.datasource.impl.IDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
+import per.wlj.database.ui.MainUI;
 
 public class OracleBeanBuilder implements IBeanBuilder {
 	
@@ -71,6 +72,7 @@ public class OracleBeanBuilder implements IBeanBuilder {
 			while(rs.next() ){
 				String tableName =  rs.getString("TABLE_NAME");
 				System.out.println("BUILD THE【"+i+"】table,name:【"+tableName+"】");
+                                MainUI.log("BUILD THE【"+i+"】table,name:【"+tableName+"】");
 				Table table = buildTableByName(tableName, conn);
 				buildTableColumns(table, conn);
 				tables.add(table);

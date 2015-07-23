@@ -15,6 +15,7 @@ import per.wlj.database.datasource.impl.DTDataSource;
 import per.wlj.database.datasource.impl.DataSourceFactory;
 import per.wlj.database.datasource.impl.IDataSource;
 import per.wlj.database.source.impl.OracleDescripCommond;
+import per.wlj.database.ui.MainUI;
 import per.wlj.files.Writer;
 
 public class DataExporter {
@@ -25,10 +26,35 @@ public class DataExporter {
 			"OCRM_F_WP_WORK_REPORT_COM",
 			"OCRM_F_WP_WORK_REPORT_PER",
 			"ACRM_F_CI_GRT_INFO"};
-	int limit = 400;
+	int limit = -1;
 	int start = 0;
+	int lineLimit = -1;
 	
+	String singleTableName = null;
+	
+	public int getLineLimit() {
+		return lineLimit;
+	}
+
+	public void setLineLimit(int lineLimit) {
+		this.lineLimit = lineLimit;
+	}
+
+        public String getSingleTableName(){
+            return this.singleTableName;
+        }
+        
+        public void setSingleTableName(String singleTableName){
+            this.singleTableName = singleTableName;
+        }
+        
 	public void buildData(){
+		
+		if(null != this.singleTableName){
+			this.buildData(singleTableName);
+			return;
+		}
+		
 		Writer writer = new Writer();
 		writer.setFileName(dataFilePath+dataFileName);
 		OracleDescripCommond odc = new OracleDescripCommond();
@@ -43,7 +69,7 @@ public class DataExporter {
 			ps = conn.prepareStatement(allTable);
 			rs = ps.executeQuery();
 			int index = 0;
-			while(rs.next() &&  index < limit){
+			while(rs.next() && (limit < 0 || index < limit)){
 				if(!Arrays.asList(this.exludeTables).contains(rs.getString("TABLE_NAME")) && index >= start){
 					writer.writeLine("-- --------------------------------------------------------------");
 					writer.writeLine("-- index : "+index);
@@ -54,8 +80,10 @@ public class DataExporter {
 					buildTable(rs.getString("TABLE_NAME"), conn, writer);
 				}
 				System.out.println("TABLE INDDEX 【"+index+"】");
+				MainUI.log("TABLE INDDEX 【"+index+"】");
 				index ++ ;
 			}
+			MainUI.log("writing in : "+writer.getFileName());
 			writer.closeWriter();
 			ps.close();
 			rs.close();
@@ -85,15 +113,11 @@ public class DataExporter {
 			de.buildTable(tablename, conn, writer);
 			
 			conn.close();
+			MainUI.log("writing in : "+writer.getFileName());
+			writer.closeWriter();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}finally{
-			try {
-				writer.closeWriter();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			if(null != conn)
 				try {
 					conn.close();
@@ -122,6 +146,7 @@ public class DataExporter {
 	private void insertBuilder (String tableName ,ResultSet rs , Writer writer){
 		StringBuilder insertHead = new StringBuilder("INSERT INTO ");
 		System.out.println("Start building table  【"+tableName+"】...");
+                MainUI.log("Start building table  【"+tableName+"】...");
 		long start = System.currentTimeMillis();
 		try {
 			ResultSetMetaData rsmd = rs.getMetaData();
@@ -136,7 +161,7 @@ public class DataExporter {
 			insertHead.append(" ) values ");
 			
 			int lineNumber= 0;
-			while(rs.next()){
+			while(rs.next() && (this.lineLimit<0 || lineNumber < this.lineLimit)){
 				StringBuilder valuesSql = new StringBuilder("(");
 				for(int i=1;i<=rsmd.getColumnCount();i++){
 					int type = rsmd.getColumnType(i);
@@ -189,7 +214,8 @@ public class DataExporter {
 			long end = System.currentTimeMillis();
 			long second = (end - start)/10;
 			System.out.println("TABLE 【"+tableName+"】 HAS BEAN BUILT, WITH 【"+lineNumber+"】 LINES, used 【"+second+"】 seconds!");
-		} catch (SQLException e) {
+                        MainUI.log("TABLE 【"+tableName+"】 HAS BEAN BUILT, WITH 【"+lineNumber+"】 LINES, used 【"+second+"】 seconds!");
+                } catch (SQLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
