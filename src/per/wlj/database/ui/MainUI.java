@@ -5,6 +5,8 @@
  */
 package per.wlj.database.ui;
 
+import sun.misc.VM;
+
 
 /**
  *
@@ -144,6 +146,7 @@ public class MainUI extends javax.swing.JFrame {
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+    	System.out.println(VM.maxDirectMemory()/1024/1024);
         try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {

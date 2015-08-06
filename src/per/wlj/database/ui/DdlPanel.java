@@ -135,7 +135,7 @@ public class DdlPanel extends javax.swing.JPanel {
     				if(null != tableNameString && !"".equals(tableNameString))
     					en.runDdl(tableNameString);
     				else
-    					en.runDdl();
+    					en.runDdl(1);
     			} catch (Exception ex) {
     				Logger.getLogger(DdlPanel.class.getName()).log(Level.SEVERE, null, ex);
     			}

@@ -1,5 +1,7 @@
 package per.wlj.database.convert.impl;
 
+import per.wlj.database.beans.Column;
+import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
 import per.wlj.database.convert.IConvertor;
 
@@ -30,8 +32,48 @@ public class OracleConvertorImpl implements IConvertor {
 	
 	@Override
 	public Table convert(Table table) {
-		// TODO Auto-generated method stub
+		Database target = new Database();
+		target.setType("oracle");
+		target.setVersion("10.0.2");
+		table.setDatabase(target);
+		for(Column column : table.getColumns()){
+			convertColumnToOracle(column);
+		}
 		return null;
 	}
+	
+	private void convertColumnToOracle(Column column){
+		int origenType = column.getOriginType();
+		switch(origenType){
+		case 1 :
+			column.setType("VARCHAR2");
+			break;
+		case 2 :
+			column.setType("INTEGER");
+			break;
+		case 3 :
+			column.setType("LONG");
+			break;
+		case 4 :
+			column.setType("NUMBER");
+			break;
+		case 5 :
+			column.setType("DATE");
+			break;
+		case 6 : 
+			column.setType("TIMESTAMP");
+			break;
+		case 7 : 
+			column.setType("BLOB");
+			break;
+		case 8 : 
+			column.setType("CLOB");
+			break;
+		default:
+			column.setType("VARCHAR2");
+			break;
+		}
+	}
+	
 
 }
