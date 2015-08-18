@@ -14,7 +14,7 @@ import java.util.Date;
 import per.wlj.database.datasource.impl.DTDataSource;
 import per.wlj.database.datasource.impl.DataSourceFactory;
 import per.wlj.database.datasource.impl.IDataSource;
-import per.wlj.database.source.impl.OracleDescripCommond;
+import per.wlj.database.source.impl.OracleDescripCommand;
 import per.wlj.database.ui.MainUI;
 import per.wlj.files.Writer;
 
@@ -57,7 +57,7 @@ public class DataExporter {
 		
 		Writer writer = new Writer();
 		writer.setFileName(dataFilePath+dataFileName);
-		OracleDescripCommond odc = new OracleDescripCommond();
+		OracleDescripCommand odc = new OracleDescripCommand();
 		String allTable = odc.getTableDescribCommand();
 		Connection conn = null;
 		PreparedStatement ps = null;
@@ -252,6 +252,6 @@ public class DataExporter {
 
 	public void setStart(int start) {
 		this.start = start;
-	}	
+	}
 	
 }

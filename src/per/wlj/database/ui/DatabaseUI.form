@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.3" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
+                      <Component id="sourceLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="16" max="-2" attributes="0"/>
+                      <Component id="sourceCombo" min="-2" pref="70" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
+                      <Component id="targetLabel" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <Component id="targetCombo" min="-2" max="-2" attributes="0"/>
+                      <EmptySpace min="0" pref="76" max="32767" attributes="0"/>
+                  </Group>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="sourceDriverLabel" max="32767" attributes="0"/>
+                              <Component id="sourceURLLabel" max="32767" attributes="0"/>
+                              <Component id="sourceUsernameLabel" max="32767" attributes="0"/>
+                              <Component id="sourcePasswordLabel" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="sourceDatabaseNameLabel" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="sourceDriver" max="32767" attributes="0"/>
+                          <Component id="sourceURL" max="32767" attributes="0"/>
+                          <Component id="sourceUsername" alignment="0" max="32767" attributes="0"/>
+                          <Component id="sourcePassword" alignment="0" max="32767" attributes="0"/>
+                          <Component id="sourceDatabaseName" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                  </Group>
+                  <Group type="102" alignment="1" attributes="0">
+                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                      <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sourceCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sourceLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="targetLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="targetCombo" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="32767" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sourceDriverLabel" alignment="3" min="-2" pref="17" max="-2" attributes="0"/>
+                  <Component id="sourceDriver" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sourceURL" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sourceURLLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sourceUsername" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sourceUsernameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sourcePassword" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sourcePasswordLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="sourceDatabaseName" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="sourceDatabaseNameLabel" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="jButton1" min="-2" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="8" max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JComboBox" name="sourceCombo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="oracle"/>
+            <StringItem index="1" value="mysql"/>
+          </StringArray>
+        </Property>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sourceComboActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sourceLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x6e90;&#x6570;&#x636e;&#x5e93;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="targetLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x76ee;&#x6807;&#x6570;&#x636e;&#x5e93;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JComboBox" name="targetCombo">
+      <Properties>
+        <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+          <StringArray count="2">
+            <StringItem index="0" value="oracle"/>
+            <StringItem index="1" value="mysql"/>
+          </StringArray>
+        </Property>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sourceDriverLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x6e90;&#x6570;&#x636e;&#x5e93;&#x9a71;&#x52a8;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sourceURLLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x6e90;&#x6570;&#x636e;&#x5e93;URL"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sourceUsernameLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x6e90;&#x6570;&#x636e;&#x5e93;&#x7528;&#x6237;&#x540d;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sourcePasswordLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x6e90;&#x6570;&#x636e;&#x5e93;&#x5bc6;&#x7801;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="sourceDatabaseNameLabel">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x6e90;&#x6570;&#x636e;&#x5e93;&#x540d;&#x79f0;"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="sourceDriver">
+    </Component>
+    <Component class="javax.swing.JTextField" name="sourceURL">
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sourceURLActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JTextField" name="sourceUsername">
+    </Component>
+    <Component class="javax.swing.JTextField" name="sourcePassword">
+    </Component>
+    <Component class="javax.swing.JTextField" name="sourceDatabaseName">
+    </Component>
+    <Component class="javax.swing.JButton" name="jButton1">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="&#x751f;&#x6548;"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>

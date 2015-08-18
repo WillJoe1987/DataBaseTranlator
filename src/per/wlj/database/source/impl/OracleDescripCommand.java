@@ -2,7 +2,7 @@ package per.wlj.database.source.impl;
 
 import per.wlj.database.source.IDescriptionCommand;
 
-public class OracleDescripCommond implements IDescriptionCommand {
+public class OracleDescripCommand implements IDescriptionCommand {
 
 	@Override
 	public String getTableDescribCommand() {

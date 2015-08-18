@@ -14,18 +14,18 @@ import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
 import per.wlj.database.datasource.impl.DataSourceFactory;
 import per.wlj.database.datasource.impl.IDataSource;
-import per.wlj.database.source.impl.OracleDescripCommond;
+import per.wlj.database.source.impl.OracleDescripCommand;
 import per.wlj.database.ui.MainUI;
 
 public class OracleBeanBuilder implements IBeanBuilder {
 	
 	IDataSource ods;
-	OracleDescripCommond odc;
+	OracleDescripCommand odc;
 	Database oracle = new Database();
 	
 	public OracleBeanBuilder(){
 		this.ods = DataSourceFactory.getInstance().createDataSource("oracle");
-		odc = new OracleDescripCommond();
+		odc = new OracleDescripCommand();
 	}
 	
 	public static List<String> nonLengthAble = new ArrayList<String>();

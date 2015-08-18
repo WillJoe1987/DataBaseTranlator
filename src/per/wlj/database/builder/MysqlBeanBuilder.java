@@ -33,6 +33,7 @@ public class MysqlBeanBuilder implements IBeanBuilder {
 		nonLengthAble.add("clob");
 		nonLengthAble.add("long");
 		nonLengthAble.add("blob");
+		nonLengthAble.add("text");
 	}
 	
 	public static Map<String ,Integer> typeMapping = new HashMap<String ,Integer>();
@@ -96,13 +97,13 @@ public class MysqlBeanBuilder implements IBeanBuilder {
 		PreparedStatement statement = null;
 		ResultSet resultset = null;
 		String tbsSql = mdc.getTableDescribCommand();
-		
 		try {
 			conn = mds.getConnection();
 			statement = conn.prepareStatement(tbsSql);
 			resultset = statement.executeQuery();
 			int i=0;
-			while(resultset.next()){
+			boolean hasNext = resultset.next();
+			while(hasNext){
 				String tableName = resultset.getString("table_name");
 				String tableComment = resultset.getString("table_comment");
 				Table table = buildTable(tableName, tableComment);
@@ -110,10 +111,12 @@ public class MysqlBeanBuilder implements IBeanBuilder {
 				MainUI.log("BUILD THE【"+i+"】table,name:【"+tableName+"】");
 				tables.add(table);
 				i++;
+				hasNext = resultset.next();
 			}
 			resultset.close();
 			statement.close();
 		} catch (SQLException e) {
+			MainUI.log(e.getMessage());
 			e.printStackTrace();
 		}finally{
 			if(conn != null){
@@ -123,6 +126,7 @@ public class MysqlBeanBuilder implements IBeanBuilder {
 					e.printStackTrace();
 				}
 			}
+			MainUI.log(tables.size()+"");
 			return tables;
 		}
 	}
@@ -179,13 +183,21 @@ public class MysqlBeanBuilder implements IBeanBuilder {
 			while(resultset.next()){
 				Column column = new Column();
 				column.setName(resultset.getString("column_name"));
+				if(table.getName().equals("all_type_table")){
+					MainUI.log(column.getName());
+				}
 				column.setNullable(MYSQL_YES.equals(resultset.getString("is_nullable")));
 				String type = resultset.getString("data_type");
 				column.setType(type);
 				String characterMaximunLength =  resultset.getString("character_maximum_length");
 				String numericPrecision = resultset.getString("numeric_precision");
 				String numricScale = resultset.getString("numeric_scale");
-				
+				if(table.getName().equals("all_type_table")){
+					MainUI.log(column.getName());
+					MainUI.log(characterMaximunLength);
+					MainUI.log(numericPrecision);
+					MainUI.log(numricScale);
+				}
 				if(nonLengthAble.indexOf(column.getType())>=0){
 					column.setLengthable(false);
 				}else if(!MYSQL_NULL.equals(characterMaximunLength) && null != characterMaximunLength){

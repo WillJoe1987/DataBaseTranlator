@@ -1,10 +1,12 @@
 package per.wlj.database.runnable;
 
 import java.util.List;
+import java.util.Map;
 
 import org.antlr.stringtemplate.StringTemplate;
 import org.antlr.stringtemplate.StringTemplateGroup;
 
+import per.wlj.database.beans.Database;
 import per.wlj.database.beans.Table;
 import per.wlj.database.builder.IBeanBuilder;
 import per.wlj.database.builder.MysqlBeanBuilder;
@@ -32,20 +34,31 @@ public class Entrance {
 			fileName = "ddl.sql";
 		}
 		
+		//DB_INFORMATIONS
+		Map<String, String> dbinfos = (Map<String, String>)BuilderContext.getInstance().getParams("DB_INFORMATIONS");
 		
-		OracleBeanBuilder obb = new OracleBeanBuilder();
+		String sourceType = dbinfos.get("SOURCE_TYPE");
+		String targetType = dbinfos.get("TARGET_TYPE");
+		
+		Database sourceDb = new Database();
+		sourceDb.setType(sourceType);
+		Database targetDb = new Database();
+		targetDb.setType(targetType);
+		
+		IBeanBuilder builder = sourceDb.getBeanBuilder();
 		long start = System.currentTimeMillis();
-		List<Table> tables = obb.buildAllTables();
-		
-		MysqlConvertorImpl mci = new MysqlConvertorImpl();
-		StringTemplateGroup stg = new StringTemplateGroup("mysql");
+		List<Table> tables = builder.buildAllTables();
+		IConvertor convertor = targetDb.getConverter();
+				
+		StringTemplateGroup stg = new StringTemplateGroup(targetType);
 		Writer w = new Writer();
 		w.setFileName(filePath+fileName);
 		w.createAndOpenFile();
 		int i=0;
 		for(Table table : tables){
-			mci.convert(table);
-			StringTemplate st1 = stg.getInstanceOf("mysql");
+			if(!sourceType.equals(targetType))
+				convertor.convert(table);
+			StringTemplate st1 = stg.getInstanceOf(targetType);
 			st1.setAttribute("table", table);
 			w.writeLine(st1.toString());
 			System.out.println("Writing THE【"+i+"】table,name:【"+table.getName()+"】");
@@ -71,7 +84,6 @@ public class Entrance {
 		if(null == fileName || "".equals(fileName)){
 			fileName = "ddl.sql";
 		}
-		
 		
 		IBeanBuilder obb = new MysqlBeanBuilder();
 		long start = System.currentTimeMillis();
@@ -111,7 +123,6 @@ public class Entrance {
 		if(null == fileName || "".equals(fileName)){
 			fileName = "ddl.sql";
 		}
-		
 		OracleBeanBuilder obb = new OracleBeanBuilder();
 		long start = System.currentTimeMillis();
 		Table table = obb.buildTableByName(name);
@@ -136,11 +147,6 @@ public class Entrance {
 		MainUI.log("writing in : "+ w.getFileName());	
 	}
 	
-	
-	
-	
-	
-	
 	public void runDataExport(){
 		long start = System.currentTimeMillis();
 		DataExporter de = new DataExporter();
@@ -158,7 +164,7 @@ public class Entrance {
 		long end = System.currentTimeMillis();
 		System.out.println("Time used total: ["+((end - start)/1000)+"]");
 	}
-	
+
 //	public static void main(String[] args) throws Exception {
 //		String runpar = "ddl";//data
 //		Entrance en = new Entrance();

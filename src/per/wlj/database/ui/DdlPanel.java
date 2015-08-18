@@ -134,8 +134,9 @@ public class DdlPanel extends javax.swing.JPanel {
     				Entrance en = new Entrance();
     				if(null != tableNameString && !"".equals(tableNameString))
     					en.runDdl(tableNameString);
-    				else
-    					en.runDdl(1);
+    				else{
+    					en.runDdl();
+    				}
     			} catch (Exception ex) {
     				Logger.getLogger(DdlPanel.class.getName()).log(Level.SEVERE, null, ex);
     			}
@@ -144,7 +145,6 @@ public class DdlPanel extends javax.swing.JPanel {
     	this.treadHandler = new Thread(r);
     	this.treadHandler.start();
     }//GEN-LAST:event_jButton2ActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

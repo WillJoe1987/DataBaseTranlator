@@ -5,6 +5,7 @@
  */
 package per.wlj.database.ui;
 
+import java.util.Map;
 import sun.misc.VM;
 
 
@@ -24,6 +25,7 @@ public class MainUI extends javax.swing.JFrame {
         initComponents();
         this.ddlPanel2.setVisible(false);
         this.dataImportPanel1.setVisible(false);
+        database.setVisible(false);
         this.setSize(800, 500);
     }
     
@@ -48,11 +50,13 @@ public class MainUI extends javax.swing.JFrame {
         f.setText("cqmyg,\nysdss,\njtwmy,\ndtsgx.\n");
         face.add(f);
         
+        database = new per.wlj.database.ui.DatabaseUI();
         dataImportPanel1 = new per.wlj.database.ui.DataExport();	//EXPORT面板
         ddlPanel2 = new per.wlj.database.ui.DdlPanel();					//DDL面板
         jToolBar2 = new javax.swing.JToolBar();							//jPanel1工具栏
         jButton1 = new javax.swing.JButton();							//显示DDL面板按钮
         jButton2 = new javax.swing.JButton();							//显示EXPORT面板按钮
+        jButton3 = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();							//主窗口菜单栏
         jMenu1 = new javax.swing.JMenu();								//file
 
@@ -61,11 +65,23 @@ public class MainUI extends javax.swing.JFrame {
         jPanel1.add(face);
         jPanel1.add(dataImportPanel1);
         jPanel1.add(ddlPanel2);
+        jPanel1.add(database);
         //jPanel1.setBackground(new Color(0, 0, 0));
         
         
         
         jToolBar2.setRollover(true);
+        
+        jButton3.setText("database");
+        jButton3.setFocusable(false);
+        jButton3.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton3.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jToolBar2.add(jButton3);
 
         jButton1.setText("ddl");
         jButton1.setFocusable(false);
@@ -90,6 +106,8 @@ public class MainUI extends javax.swing.JFrame {
         });
         jToolBar2.add(jButton2);
 
+        
+        
         jMenu1.setText("File");
         jMenuBar1.add(jMenu1);
 
@@ -98,7 +116,7 @@ public class MainUI extends javax.swing.JFrame {
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane()); //主面板布局对象
         getContentPane().setLayout(layout);												//
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER).addGap(10)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING).addGap(10)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(jToolBar2)
@@ -108,7 +126,7 @@ public class MainUI extends javax.swing.JFrame {
                 )
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(
             		javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
             		.addComponent(jToolBar2, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -130,16 +148,29 @@ public class MainUI extends javax.swing.JFrame {
         this.showExport();        
     }
 
+      private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {
+        this.showDatabase();        
+    }
+    
     public void showExport(){
         this.ddlPanel2.setVisible(false);
         this.dataImportPanel1.setVisible(true);
         face.setVisible(false);
+        database.setVisible(false);
     }
     
     public void showDDL(){
          this.ddlPanel2.setVisible(true);
         this.dataImportPanel1.setVisible(false);
         face.setVisible(false);
+        database.setVisible(false);
+    }
+    
+    public void showDatabase(){
+        this.ddlPanel2.setVisible(false);
+        this.dataImportPanel1.setVisible(false);
+        face.setVisible(false);
+        database.setVisible(true);
     }
     
     /**
@@ -175,15 +206,24 @@ public class MainUI extends javax.swing.JFrame {
     private per.wlj.database.ui.DdlPanel ddlPanel2;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;                   
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JToolBar jToolBar2;
     private per.wlj.database.ui.util.LogPanel logPanel1;
+    private per.wlj.database.ui.DatabaseUI database;
+    
     public static void log(String log){
         if(null != instance){
             instance.logPanel1.appendLog(log);
         }
+    }
+    
+    public static Map<String, String> dbInfomations(){
+        if(null != instance)
+            return instance.database.getDBInformations();
+        else return null;
     }
 
 }

@@ -4,4 +4,4 @@ CREATE OR REPLACE TABLE $table.name$
 );
 $if(table.comment)$COMMENT ON TABLE $table.name$ IS '$table.comment$'; $endif$
 
-$table.columns:{s|$if(s.comment)$ COMMENT ON COLUMN $table.name$.$s.name$ IS '$s.comment$' $endif$};separator="; \n"$
+$table.columns:{s|$if(s.comment)$ COMMENT ON COLUMN $table.name$.$s.name$ IS '$s.comment$'; $endif$};separator="\n"$
